@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchBrand } from "../../reducers/actions";
+import { filtersSelector } from "../../reducers/selectors";
 
 const brandList = [
     { "value": 'All', "name": 'All Products' },
@@ -82,6 +85,8 @@ const brandList = [
     { "value": "YIOSI", "name": "YIOSI" }
 ]
 function Brand() {
+    const dispatch = useDispatch()
+    const {brand} = useSelector(filtersSelector)
     const [collapse, setCollapse] = useState(false)
     return (
         <div className="accordion-item py-2 d-flex flex-column">
@@ -97,8 +102,9 @@ function Brand() {
                         {
                             brandList.map(item => (
                                 <button key={item.value}
-                                    className={`btn btn-sm btn-outline-secondary me-1 mb-1 ${item.value === 'All' ? 'active' : ''}`}
+                                    className={`btn btn-sm btn-outline-secondary me-1 mb-1 ${item.value === brand ? 'active' : ''}`}
                                     type="button"
+                                    onClick={() => dispatch(setSearchBrand(item.value))}
                                 >
                                     {item.name}
                                 </button>
