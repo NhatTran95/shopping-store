@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { filtersSelector } from "../../store/selector";
+import filtersSlice from "../../redux-toolkit/filtersSlice";
 
 const categories = [
     { "value": 'All', "name": 'All' },
@@ -24,6 +27,10 @@ const categories = [
 ]
 function Category() {
     const [collapse, setCollapse] = useState(false)
+
+const dispatch = useDispatch();
+const {category} = useSelector(filtersSelector)
+
     return (
         <div className="accordion-item py-2 d-flex flex-column justify-content-center">
             <h5 className="accordion-header">
@@ -42,12 +49,13 @@ function Category() {
                                     <input className="form-check-input" type="radio" name="category"
                                         id={`cat_${index}`}
                                         value={cat.value}
-                                        defaultChecked={cat.value === 'All'}
+                                        defaultChecked={cat.value === category}
+                                        onChange={() => dispatch(filtersSlice.actions.setSearchCategory(cat.value))}
                                     />
                                     <label
                                         htmlFor={`cat_${index}`}
                                         role="button"
-                                        className={`form-check-label ${cat.value === 'All' ? 'text-decoration-underline fw-bolder' : ''}`}
+                                        className={`form-check-label ${cat.value === category ? 'text-decoration-underline fw-bolder' : ''}`}
                                     >
                                         {cat.name}
                                     </label>
